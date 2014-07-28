@@ -1,16 +1,31 @@
 package com.example.textlockapp;
 
-import android.support.v7.app.ActionBarActivity;
+import java.util.ArrayList;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.EditText;
+import android.widget.ListView;
 
 public class MainActivity extends ActionBarActivity {
+	
+	ArrayList<String> messages_to_show = new ArrayList<String>();
+	
+	ArrayAdapter<String> Adpt;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
+		
+		Adpt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, messages_to_show);
+		
+		ListView DispMessages = (ListView) findViewById(R.id.displayed_messages);
+		
+		DispMessages.setAdapter(Adpt);
 	}
 
 	@Override
@@ -30,5 +45,15 @@ public class MainActivity extends ActionBarActivity {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+	
+	public void sendMessage(View view) {
+		EditText TextBox = (EditText)findViewById(R.id.text_box);
+		String text_message = TextBox.getText().toString();
+		TextBox.setText("");
+		
+		messages_to_show.add(text_message);
+		
+		Adpt.notifyDataSetChanged();
 	}
 }
