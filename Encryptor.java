@@ -42,13 +42,14 @@ public class Encryptor
 		  
 		  for (int i = 0; i < 65; i++)
 		  {
-			  for(int j=0; j<50; i++)
+			  for(int j=0; j<50; j++)
 			  {
 				  Key[i][j] = readerKey.next();
 			  }
 			  readerKey.next();
 		  }
 		  readerKey.close();
+		  
 	  }
 
 	  private static int keyLocation(String a)
