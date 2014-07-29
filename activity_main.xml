@@ -12,8 +12,13 @@
 	<View
 	    android:layout_height="5dp" 
 	    android:layout_width="match_parent"
-	    android:background="#ff0c3e" />
-	    
+	    android:background="#16195D" />
+	
+	<EditText android:id="@+id/phone_number"
+			android:padding="16dp"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:hint="@string/phone_number" />    
 	
 	<LinearLayout android:id="@+id/texting_area"
 		android:layout_width="match_parent"
@@ -40,4 +45,7 @@
 			android:onClick="sendMessage" />
 
 	</LinearLayout>
+	
+	
+	
 </LinearLayout>
