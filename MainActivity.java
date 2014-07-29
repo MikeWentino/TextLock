@@ -28,7 +28,7 @@ public class MainActivity extends ActionBarActivity {
 	private static Context context;
 	
 	private void initList() {
-		
+	
 		messages_to_show.add("0");
 		messages_to_show.add("1");
 		messages_to_show.add("2");
@@ -48,19 +48,17 @@ public class MainActivity extends ActionBarActivity {
 		setContentView(R.layout.activity_main);
 		
 		initList();
-	
-		System.out.println("Console Test");
 		
 		Adpt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, messages_to_show);
 		
 		ListView DispMessages = (ListView) findViewById(R.id.displayed_messages);
 		
 		DispMessages.setAdapter(Adpt);
-		
+	
 		DispMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 
 		     public void onItemClick(AdapterView<?> parentAdapter, View view, int position, long id) {
-		             
+		              
 		         TextView clickedView = (TextView) view;
 		 
 		         Toast.makeText(MainActivity.this, "Item with id ["+id+"] - Position ["+position+"] - Planet ["+clickedView.getText()+"]", Toast.LENGTH_SHORT).show();
@@ -69,7 +67,6 @@ public class MainActivity extends ActionBarActivity {
 		});
 		
 		registerForContextMenu(DispMessages);
-		
 	}
 	
 	@Override
@@ -105,15 +102,14 @@ public class MainActivity extends ActionBarActivity {
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
-		
 		int itemID = item.getItemId();
 		
 		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
 		int index = menuInfo.position;
 		
 		if (itemID == 2) {
-				deleteMessage(index);
-				Toast.makeText(this,  "Message Deleted", Toast.LENGTH_SHORT).show();
+			deleteMessage(index);
+			Toast.makeText(this,  "Message Deleted", Toast.LENGTH_SHORT).show();
 		}
 		else {
 			Toast.makeText(this,  "Item id ["+itemID+"]", Toast.LENGTH_SHORT).show();
@@ -123,23 +119,22 @@ public class MainActivity extends ActionBarActivity {
 
 	public void deleteMessage(int index) {
 		messages_to_show.remove(index);
-		
 		Adpt.notifyDataSetChanged();
 	}
 	
 	public void sendMessage(View view) throws IOException {
-		Toast.makeText(this,  "TEST0", Toast.LENGTH_SHORT).show();
 		EditText TextBox = (EditText)findViewById(R.id.text_box);
 		String text_message = TextBox.getText().toString();
 		if (!text_message.trim().equals("")) {
 			TextBox.setText("");
 			
-			Encryptor encryptor = new Encryptor(context);
-
-			messages_to_show.add(encryptor.encrypt(text_message));
+			Toast.makeText(this,  "Message Sent", Toast.LENGTH_SHORT).show();
 			
-			Adpt.notifyDataSetChanged();
+			Encryptor encryptor = new Encryptor(context);
 		
+			messages_to_show.add(encryptor.encrypt(text_message));
+
+			Adpt.notifyDataSetChanged();
 		}
 	}
 }
