@@ -3,6 +3,7 @@ package com.example.textlockapp;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.view.ContextMenu;
@@ -17,7 +18,6 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.content.Context;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -25,10 +25,14 @@ public class MainActivity extends ActionBarActivity {
 	ArrayList<String> messages_to_show = new ArrayList<String>();
 	
 	ArrayAdapter<String> Adpt;
+	
+	Encryptor encryptor;
+	Decryptor decryptor;
+	
 	private static Context context;
 	
 	private void initList() {
-	
+		
 		messages_to_show.add("0");
 		messages_to_show.add("1");
 		messages_to_show.add("2");
@@ -51,19 +55,27 @@ public class MainActivity extends ActionBarActivity {
 		
 		Adpt = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, messages_to_show);
 		
+		encryptor = new Encryptor(context);
+		decryptor = new Decryptor(context);
+		
 		ListView DispMessages = (ListView) findViewById(R.id.displayed_messages);
 		
 		DispMessages.setAdapter(Adpt);
-	
+		
+		// React to user clicks on item
 		DispMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 
-		     public void onItemClick(AdapterView<?> parentAdapter, View view, int position, long id) {
+		     
+		       public void onItemClick(AdapterView<?> parentAdapter, View view, int position, long id) {
+		      
 		              
+		         // We know the View is a TextView so we can cast it
 		         TextView clickedView = (TextView) view;
 		 
 		         Toast.makeText(MainActivity.this, "Item with id ["+id+"] - Position ["+position+"] - Planet ["+clickedView.getText()+"]", Toast.LENGTH_SHORT).show();
-		 
 		     }
+			
+		     
 		});
 		
 		registerForContextMenu(DispMessages);
@@ -98,10 +110,13 @@ public class MainActivity extends ActionBarActivity {
 		menu.setHeaderTitle("Options for " + word);
 		menu.add(1, 1, 1, "Details");
 		menu.add(1, 2, 2, "Delete");
+		menu.add(1, 3, 3, "Encrypt");
+		menu.add(1, 4, 4, "Decrypt");
 	}
 	
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
+		
 		int itemID = item.getItemId();
 		
 		AdapterContextMenuInfo menuInfo = (AdapterContextMenuInfo) item.getMenuInfo();
@@ -111,6 +126,20 @@ public class MainActivity extends ActionBarActivity {
 			deleteMessage(index);
 			Toast.makeText(this,  "Message Deleted", Toast.LENGTH_SHORT).show();
 		}
+		
+		if (itemID == 3) {
+			try {
+				encryptMessage(index);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		if (itemID == 4) {
+			decryptMessage(index);
+		}
+		
 		else {
 			Toast.makeText(this,  "Item id ["+itemID+"]", Toast.LENGTH_SHORT).show();
 		}
@@ -119,7 +148,27 @@ public class MainActivity extends ActionBarActivity {
 
 	public void deleteMessage(int index) {
 		messages_to_show.remove(index);
+			
 		Adpt.notifyDataSetChanged();
+	}
+	
+	public void encryptMessage(int index) throws IOException { 
+		String text_message = messages_to_show.get(index);
+		
+		messages_to_show.set(index, encryptor.encrypt(text_message));
+		
+		Adpt.notifyDataSetChanged();
+	}
+	
+	public void decryptMessage(int index) {
+		String text_message = messages_to_show.get(index);
+		
+		text_message = decryptor.decrypt(text_message);
+		
+		if (!(text_message == "")) {
+			messages_to_show.set(index, text_message);
+			Adpt.notifyDataSetChanged();
+		}
 	}
 	
 	public void sendMessage(View view) throws IOException {
