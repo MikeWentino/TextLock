@@ -22,8 +22,14 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
 	
+	// NEW ArrayList<ArrayList<String>> messages_to_show = new ArrayList<ArrayList<String>>();
+	
+	// CORRECT 
 	public static ArrayList<String> messages_to_show = new ArrayList<String>();
 	
+	// NEW MyCustomAdaptor
+	
+	// CORRECT 
 	public static ArrayAdapter<String> Adpt;
 	
 	Encryptor encryptor;
@@ -32,6 +38,28 @@ public class MainActivity extends ActionBarActivity {
 	private static Context context;
 	
 	private void initList() {
+		
+		//This is where we create our list of messages 
+		/*sentMess.add("1");
+		sentMess.add("3");
+		sentMess.add("5");
+		sentMess.add("7");
+		
+		recMess.add("2");
+		recMess.add("4");
+		recMess.add("6");
+		recMess.add("8");
+		
+		messages_to_show.add("0");
+		messages_to_show.add("1");
+		messages_to_show.add("2");
+		messages_to_show.add("3");
+		messages_to_show.add("4");
+		messages_to_show.add("5");
+		messages_to_show.add("6");
+		messages_to_show.add("7");
+		messages_to_show.add("8"); 72 48 96 144
+		*/
 	}
 		
 
@@ -51,14 +79,56 @@ public class MainActivity extends ActionBarActivity {
 		ListView DispMessages = (ListView) findViewById(R.id.displayed_messages);
 		
 		DispMessages.setAdapter(Adpt);
-
+		
+		// React to user clicks on item
 		DispMessages.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 		 
+		     
 		       public void onItemClick(AdapterView<?> parentAdapter, View view, int position, long id) {
+		      
+		              
+		         // We know the View is a TextView so we can cast it
+		         //TextView clickedView = (TextView) view;
+		 
+		         //Toast.makeText(MainActivity.this, "Item with id ["+id+"] - Position ["+position+"] - Planet ["+clickedView.getText()+"]", Toast.LENGTH_SHORT).show();
 		     }
+			
+		     
 		});
 		
 		registerForContextMenu(DispMessages);
+		
+		/*
+		LinearLayout messageview = new LinearLayout(this);
+		
+		TextView message = new TextView(this);
+		message.setText("Test Message Motherfucker");
+		
+		messageview.addView(message);
+		
+		setContentView(messageview);
+		
+		___Sending Messages___
+		public void sendSMS() {
+			String phoneNumber = "0123456789";
+			String message = "Hello World!";
+		
+			SmsManager smsManager = SmsManager.getDefault();
+			smsManageer.sendTextMessage(phoneNumber, null, message, null, null);
+		}
+		
+		public void sendLongSMS() {
+ 
+    		String phoneNumber = "0123456789";
+    		String message = "Hello World! Now we are going to demonstrate " + 
+            	"how to send a message with more than 160 characters from your Android application.";
+
+    		SmsManager smsManager = SmsManager.getDefault();
+    		ArrayList<String> parts = smsManager.divideMessage(message); 
+    		smsManager.sendMultipartTextMessage(phoneNumber, null, parts, null, null);
+		}
+		http://www.codeproject.com/Articles/463338/Sending-a-SMS-Message-from-an-Android-Application
+		*/
 	}
 	
 	@Override
@@ -83,6 +153,9 @@ public class MainActivity extends ActionBarActivity {
 	@Override
 	public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu,  v,  menuInfo);
+		//AdapterContextMenuInfo aInfo = (AdapterContextMenuInfo) menuInfo;
+		
+		//String word = Adpt.getItem(aInfo.position);
 		
 		menu.setHeaderTitle("Options for Selected Message");
 		menu.add(1, 1, 1, "Details");
