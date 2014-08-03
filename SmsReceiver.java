@@ -65,8 +65,7 @@ public class SmsReceiver extends BroadcastReceiver
             	String body = sms.getMessageBody().toString();
             	String address = sms.getOriginatingAddress();
                 
-                messages += "SMS from " + address + " :\n";                    
-                messages += body + "\n";
+                messages = body;
                 
                 // Here you can add any your code to work with incoming SMS
                 // I added encrypting of all received SMS 
@@ -75,7 +74,9 @@ public class SmsReceiver extends BroadcastReceiver
             }
             
             // Display SMS message
-            Toast.makeText( context, messages, Toast.LENGTH_SHORT ).show();
+            MainActivity.messages_to_show.add("Received:     " + messages);
+
+			MainActivity.Adpt.notifyDataSetChanged();
         }
         
         // WARNING!!! 
